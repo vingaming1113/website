@@ -1,28 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
 body {
-  background-color: lightblue;
+    background-color: lightblue;
 }
 
 h1 {
-  color: white;
-  text-align: center;
+    color: white;
+    text-align: center;
 }
 
 p {
-  font-family:'Open Sans', sans-serif;
-  font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
 }
-</style>
-</head>
-<body>
-
-<h1>hello</h1>
-<p>hi</p>
-
-</body>
-</html>
-
-
