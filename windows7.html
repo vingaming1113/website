@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/7.css">
+  <link rel="stylesheet" href="https://github.com/opuadm/opuaytfrfr/blob/a6b9367044208e762f1b2f1209402323bb3744b4/assets/main2/styles.css">
+  <title>I need iptv</title>
+  <style>
+    /* Additional CSS for draggable window */
+    .draggable {
+      cursor: move;
+      position: absolute;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://wparena.com/wp-content/uploads/2009/09/img0.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 100vh;
+    }
+    body, html {
+      overflow: hidden;
+    }
+    .blue1::before,
+    .blue1 > .title-bar {
+      background-color: rgba(0, 38, 189, 0.6)
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+</head>
+<body>
+  <div class="window blue1 active draggable" id="window" style="max-width: 750px; width: 325px;">
+    <div class="title-bar">
+      <div class="title-bar-text">Main</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close" onclick="deleteElement(this)"></button>
+      </div>
+    </div>
+    <div class="window-body has-space">
+      <p>I need iptv</p>
+      <div role="progressbar" aria-valuemin="0" aria-valuemax="100" class="animate">
+        <div id="progress1" style="width: 10%"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function getRandomFloat(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+    window.onload = function() {
+        // Animate the width of the div with a delay of 0.5 seconds
+      gsap.to("#progress1", { duration: 1, width: '25%', ease: "power2.inOut", delay: 0.5 });
+      gsap.to("#progress1", { duration: 1, width: '42%', ease: "power2.inOut", delay: getRandomFloat(1.60, 2.05) });
+    };
+  </script>
+  
+  <!-- JavaScript for drag functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const element = document.querySelector('.draggable');
+    
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+    
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+    
+            let newTop = element.offsetTop - pos2;
+            let newLeft = element.offsetLeft - pos1;
+    
+            // Ensure the element does not go offscreen on the top or bottom
+            if (newTop < 0) {
+                newTop = 0;
+            } else if (newTop > window.innerHeight - element.offsetHeight) {
+                newTop = window.innerHeight - element.offsetHeight;
+            }
+    
+            // Ensure the element does not go offscreen on the left or right
+            if (newLeft < 0) {
+                newLeft = 0;
+            } else if (newLeft > window.innerWidth - element.offsetWidth) {
+                newLeft = window.innerWidth - element.offsetWidth;
+            }
+    
+            element.style.top = newTop + "px";
+            element.style.left = newLeft + "px";
+        }
+    
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    
+        // Make the element draggable
+        element.onmousedown = dragMouseDown;
+    
+        // Update position on window resize
+        window.addEventListener('resize', () => {
+            ensureElementInBoundsOnResize();
+        });
+    
+        // Initial call to set the position correctly on load
+        function ensureElementInBoundsOnLoad() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+    
+            // Set initial position in pixels
+            let initialLeft = windowWidth - 275 - element.offsetWidth; // 486px from the right
+            let initialTop = windowHeight - 126 - element.offsetHeight;  // 211px from the bottom
+    
+            // Ensure the element stays within the bounds on load
+            if (initialLeft + element.offsetWidth > windowWidth) {
+                initialLeft = windowWidth - element.offsetWidth;
+            }
+            if (initialTop + element.offsetHeight > windowHeight) {
+                initialTop = windowHeight - element.offsetHeight;
+            }
+            if (initialLeft < 0) {
+                initialLeft = 0;
+            }
+            if (initialTop < 0) {
+                initialTop = 0;
+            }
+    
+            element.style.left = initialLeft + "px";
+            element.style.top = initialTop + "px";
+        }
+    
+        // Ensure the element stays within the bounds on resize without resetting its position
+        function ensureElementInBoundsOnResize() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+    
+            let elementLeft = element.offsetLeft;
+            let elementTop = element.offsetTop;
+    
+            // Ensure the element stays within the bounds on resize
+            if (elementLeft + element.offsetWidth > windowWidth) {
+                elementLeft = windowWidth - element.offsetWidth;
+            }
+            if (elementTop + element.offsetHeight > windowHeight) {
+                elementTop = windowHeight - element.offsetHeight;
+            }
+            if (elementLeft < 0) {
+                elementLeft = 0;
+            }
+            if (elementTop < 0) {
+                elementTop = 0;
+            }
+    
+            element.style.left = elementLeft + "px";
+            element.style.top = elementTop + "px";
+        }
+    
+        // Ensure the element is in bounds on load
+        ensureElementInBoundsOnLoad();
+    });
+  </script>
+</body>
+</html>
